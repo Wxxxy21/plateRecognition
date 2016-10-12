@@ -25,12 +25,15 @@ public class PlateDetect {
      *         </ul>
      */
     public int plateDetect(final Mat src, Vector<Mat> resultVec) {
-        Vector<Mat> matVec = plateLocate.plateLocate(src);
+    	
+    	//获取所有可能的图库集合
+        Vector<Mat> matVec = plateLocate.plateLocate1(src);
 
         if (0 == matVec.size()) {
             return -1;
         }
-
+        
+        //对上面的所有的图块，进行过滤。
         if (0 != plateJudge.plateJudge(matVec, resultVec)) {
             return -2;
         }

@@ -1,8 +1,6 @@
 package org.easypr;
 
-import java.io.File;
-
-import org.easypr.test.*;
+import org.easypr.test.EasyPrTest;
 
 
 public class Main {
@@ -97,30 +95,11 @@ public class Main {
 //    	String imgPath = "res/image/general_test3/zheF397C0.jpg";//E
 //    	String imgPath = "res/image/general_test3/zheG70000.jpg";//E
 //    	String imgPath = "res/image/general_test3/zheGZB388.jpg";//R
-    	 //	   	String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
-
     	
-    	
-    	
-    	  	 	 String imgPath = "res/image/test4/jingPR2913.jpg";//
-    	 EasyPrTest t = new EasyPrTest();
+    	String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
+    	//String imgPath = "res/image/test4/jingQM01G6.jpg";//
+    	EasyPrTest t = new EasyPrTest();
      	t.testPlateRecognise(imgPath);
     	
-  /* 	String testPath = "res/image/general_test3";
-   	 File file = new File(testPath);  
-   	 File[] array = file.listFiles(); 
-   	 
-   	 for(int i=0;i<array.length;i++){   
-            if(array[i].isFile()){   
-                // only take file name   
-                System.out.println(array[i].getName());
-             //   System.out.println("==========================      " + array[i].getName()+"     ==========================");   
-                // take file path and name   
-          //      System.out.println("#####" + array[i]);   
-          //  	t.testPlateRecognise(testPath+"/"+array[i].getName());
-                // take file path and name   
-              //  System.out.println("======================================================================");   
-            }   
-        }*/   
     }
 }

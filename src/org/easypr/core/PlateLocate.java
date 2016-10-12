@@ -189,6 +189,151 @@ public class PlateLocate {
 
         return resultVec;
     }
+    
+    
+    
+    /**
+     * 定位车牌图像
+     * 
+     * @param src
+     *            原始图像
+     * @return 一个Mat的向量，存储所有抓取到的图像
+     */
+    public Vector<Mat> plateLocate1(Mat src) {
+        Vector<Mat> resultVec = new Vector<Mat>();
+
+        Mat src_blur = new Mat();
+        Mat src_gray = new Mat();
+        Mat grad = new Mat();
+
+        int scale = SOBEL_SCALE;
+        int delta = SOBEL_DELTA;
+        int ddepth = SOBEL_DDEPTH;
+
+        // 高斯模糊。Size中的数字影响车牌定位的效果。
+        GaussianBlur(src, src_blur, new Size(gaussianBlurSize, gaussianBlurSize), 0, 0, BORDER_DEFAULT);
+        if (debug) {
+            imwrite("tmp/debug_GaussianBlur.jpg", src_blur);
+        }
+
+        // Convert it to gray 将图像进行灰度化
+        cvtColor(src_blur, src_gray, CV_RGB2GRAY);
+        if (debug) {
+            imwrite("tmp/debug_gray.jpg", src_gray);
+        }
+
+        // 对图像进行Sobel 运算，得到的是图像的一阶水平方向导数。
+
+        // Generate grad_x and grad_y
+        Mat grad_x = new Mat();
+        Mat grad_y = new Mat();
+        Mat abs_grad_x = new Mat();
+        Mat abs_grad_y = new Mat();
+
+        Sobel(src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
+        convertScaleAbs(grad_x, abs_grad_x);
+
+        Sobel(src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
+        convertScaleAbs(grad_y, abs_grad_y);
+
+        // Total Gradient (approximate)
+        addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
+
+        if (debug) {
+            imwrite("tmp/debug_Sobel.jpg", grad);
+        }
+
+        // 对图像进行二值化。将灰度图像（每个像素点有256 个取值可能）转化为二值图像（每个像素点仅有1 和0 两个取值可能）。
+
+        Mat img_threshold = new Mat();
+        threshold(grad, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+
+        if (debug) {
+            imwrite("tmp/debug_threshold.jpg", img_threshold);
+        }
+
+        // 使用闭操作。对图像进行闭操作以后，可以看到车牌区域被连接成一个矩形装的区域。
+
+        Mat element = getStructuringElement(MORPH_RECT, new Size(morphSizeWidth, morphSizeHeight));
+        morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
+
+        if (debug) {
+            imwrite("tmp/debug_morphology.jpg", img_threshold);
+        }
+
+        // Find 轮廓 of possibles plates 求轮廓。求出图中所有的轮廓。这个算法会把全图的轮廓都计算出来，因此要进行筛选。
+
+        MatVector contours = new MatVector();
+        findContours(img_threshold, contours, // a vector of contours
+                CV_RETR_EXTERNAL, // 提取外部轮廓
+                CV_CHAIN_APPROX_NONE); // all pixels of each contours
+
+        Mat result = new Mat();
+        if (debug) {
+            // Draw red contours on the source image
+            src.copyTo(result);
+            drawContours(result, contours, -1, new Scalar(0, 0, 255, 255));
+            imwrite("tmp/debug_Contours.jpg", result);
+        }
+
+        // Start to iterate to each contour founded
+        // 筛选。对轮廓求最小外接矩形，然后验证，不满足条件的淘汰。
+
+        Vector<RotatedRect> rects = new Vector<RotatedRect>();
+
+        for (int i = 0; i < contours.size(); ++i) {
+            RotatedRect mr = minAreaRect(contours.get(i));
+            if (verifySizes(mr))
+                rects.add(mr);
+        }
+
+        int k = 1;
+        for (int i = 0; i < rects.size(); i++) {
+            RotatedRect minRect = rects.get(i);
+            if (verifySizes(minRect)) {
+
+                if (debug) {
+                    Point2f rect_points = new Point2f(4);
+                    minRect.points(rect_points);
+
+                    for (int j = 0; j < 4; j++) {
+                        Point pt1 = new Point(rect_points.position(j).asCvPoint2D32f());
+                        Point pt2 = new Point(rect_points.position((j + 1) % 4).asCvPoint2D32f());
+
+                        line(result, pt1, pt2, new Scalar(0, 255, 255, 255), 1, 8, 0);
+                    }
+                }
+
+                // rotated rectangle drawing
+                // 旋转这部分代码确实可以将某些倾斜的车牌调整正，但是它也会误将更多正的车牌搞成倾斜！所以综合考虑，还是不使用这段代码。
+                // 2014-08-14,由于新到的一批图片中发现有很多车牌是倾斜的，因此决定再次尝试这段代码。
+
+                float r = minRect.size().width() / minRect.size().height();
+                float angle = minRect.angle();
+                Size rect_size = new Size((int) minRect.size().width(), (int) minRect.size().height());
+                if (r < 1) {
+                    angle = 90 + angle;
+                    rect_size = new Size(rect_size.height(), rect_size.width());
+                }
+                // 如果抓取的方块旋转超过m_angle角度，则不是车牌，放弃处理
+                if (angle - this.angle < 0 && angle + this.angle > 0) {
+                    // Create and rotate image
+                    Mat rotmat = getRotationMatrix2D(minRect.center(), angle, 1);
+                    Mat img_rotated = new Mat();
+                    warpAffine(src, img_rotated, rotmat, src.size()); // CV_INTER_CUBIC
+                    
+                    Mat resultMat = showResultMat(img_rotated, rect_size, minRect.center(), k++);
+                    resultVec.add(resultMat);
+                }
+            }
+        }
+        if (debug) {
+            imwrite("tmp/debug_result.jpg", result);
+        }
+
+        return resultVec;
+    }
+    
 
     // 设置与读取变量
 

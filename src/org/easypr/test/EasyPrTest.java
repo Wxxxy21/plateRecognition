@@ -5,7 +5,6 @@ import static org.easypr.core.CoreFunc.getPlateType;
 import static org.easypr.core.CoreFunc.projectedHistogram;
 import static org.easypr.core.CoreFunc.showImage;
 
-import java.io.File;
 import java.util.Vector;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
