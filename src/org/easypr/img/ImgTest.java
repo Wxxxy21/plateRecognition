@@ -3,7 +3,6 @@ package org.easypr.img;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -31,17 +30,19 @@ public class ImgTest {
 		
         BufferedImage image =  ImageIO.read(file); 
         
+        int type = image.getType();
+        
+        System.out.println(image.getWidth());
+        System.out.println(type);
+        
+        if ( type ==BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB ){
+        	
+        }
         
         int temp = 0;
         for (int i = 0; i < image.getWidth(); i++) {
             for (int j = 0; j < image.getHeight(); j++) {
             	
-            	int rgb = image.getRGB(i, j);
-            	
-            	if(rgb!=temp){
-            		System.out.println(rgb);
-            		temp = rgb;
-            	}
             	
             }
         }

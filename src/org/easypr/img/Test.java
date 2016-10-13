@@ -1,6 +1,5 @@
 package org.easypr.img;
 
-import java.awt.Color;
 
 public class Test {
 
