@@ -1,6 +1,7 @@
 package org.easypr.core;
 
 import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_highgui.imread;
 import static org.bytedeco.javacpp.opencv_highgui.imwrite;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 
@@ -203,9 +204,9 @@ public class PlateLocate {
      */
     public Vector<Mat> plateLocate1(Mat src) {
     	
-    	Mat bw = getBlackWhiteMat(src);
+    	Vector<Mat> resultVec = new Vector<Mat>();
     	
-        Vector<Mat> resultVec = new Vector<Mat>();
+    	Mat src_bw = getBlackWhiteMat(src);
 
         Mat src_blur = new Mat();
         Mat src_gray = new Mat();
@@ -216,7 +217,7 @@ public class PlateLocate {
         int ddepth = SOBEL_DDEPTH;
 
         // 高斯模糊。Size中的数字影响车牌定位的效果。
-        GaussianBlur(src, src_blur, new Size(gaussianBlurSize, gaussianBlurSize), 0, 0, BORDER_DEFAULT);
+        GaussianBlur(src_bw, src_blur, new Size(gaussianBlurSize, gaussianBlurSize), 0, 0, BORDER_DEFAULT);
         if (debug) {
             imwrite("tmp/debug_GaussianBlur.jpg", src_blur);
         }
@@ -340,16 +341,20 @@ public class PlateLocate {
     }
     
 
-    
+    /**
+     * 获取只有车牌的黑白照片
+     * @param src
+     * @return
+     */
     private Mat getBlackWhiteMat(Mat src) {
-    	src.getBufferedImage();
-    	
+    	Mat bw = null;
     	try {
 			ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.bluePlateRGB);
+			bw = imread("yrTmp/blankWidth.jpg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return bw;
 	}
 
 	public void setGaussianBlurSize(int gaussianBlurSize) {

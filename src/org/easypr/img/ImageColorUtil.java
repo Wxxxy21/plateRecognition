@@ -60,11 +60,11 @@ public class ImageColorUtil {
                 }else{
                 	bi.setRGB(i, j, 0x000000);
                 }
+                
                   
             }  
         }  
         System.out.println("处理完毕。");  
-        System.out.println();  
         /** 
          * 将缓冲对象保存到新文件中 
          */  
