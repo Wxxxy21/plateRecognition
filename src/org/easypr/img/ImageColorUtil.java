@@ -8,14 +8,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageColorUtil {
+	
+	
+	public static final int[] bluePlateRGB = new int[]{0,10,15,35,100,130};
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor("e:/d4/jingQM01G6.jpg","e:/d5/jingQM01G6.jpg",new int[]{0,10},new int[]{15,35},new int[]{100,130});
+		replaceColor("e:/d4/jingQM01G6.jpg","e:/d5/jingQM01G6.jpg",bluePlateRGB);
     }
 
-	private static void replaceColor(BufferedImage bi, String target,
-			int[] red, int[] green, int[] blue) throws IOException {
+	public static void replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
 		 /** 
          * 定义一个RGB的数组，因为图片的RGB模式是由三个 0-255来表示的 比如白色就是(255,255,255) 
          */  
@@ -47,14 +49,14 @@ public class ImageColorUtil {
                 rgb[1] = (pixel & 0xff00) >> 8;  
                 rgb[2] = (pixel & 0xff);  
                 //如果颜色在范围内，变白，否则变黑
-                if(	rgb[0]<=red[1]&&rgb[0]>red[0] 
-               		 	&& 
-                		rgb[1]<green[1]&&rgb[1]>green[0] 
-                			&& 
-                		rgb[2]<blue[1]&&rgb[2]>blue[0] 
+                if(			rgb[0]>rgbRange[0] && rgb[0]<=rgbRange[1]
+               		 				&& 
+               		 		rgb[1]>rgbRange[2] && rgb[1]<=rgbRange[3]
+               		 				&& 
+                			rgb[2]>rgbRange[4] && rgb[2]<=rgbRange[5]
                 	){  
                	 
-               	 bi.setRGB(i, j, 0xFFFFFF);
+                	bi.setRGB(i, j, 0xFFFFFF);
                 }else{
                 	bi.setRGB(i, j, 0x000000);
                 }
@@ -83,8 +85,7 @@ public class ImageColorUtil {
 	 * @param blue
 	 * @throws IOException
 	 */
-	public static void replaceColor(String src, String target, int[] red,
-			int[] green, int[] blue) throws IOException {
+	public static void replaceColor(String src, String target, int[] rgbRange) throws IOException {
 		File file = new File(src); 
 		BufferedImage bi = null;  
         try {  
@@ -92,7 +93,7 @@ public class ImageColorUtil {
         } catch (Exception e) {  
             e.printStackTrace();  
         } 
-		replaceColor(bi,"e:/d5/jingQM01G6.jpg",new int[]{0,10},new int[]{15,35},new int[]{100,130});
+		replaceColor(bi,"e:/d5/jingQM01G6.jpg",rgbRange);
 		
 	}  
 

@@ -4,6 +4,7 @@ import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_highgui.imwrite;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import org.bytedeco.javacpp.opencv_core.Mat;
@@ -13,6 +14,7 @@ import org.bytedeco.javacpp.opencv_core.Point2f;
 import org.bytedeco.javacpp.opencv_core.RotatedRect;
 import org.bytedeco.javacpp.opencv_core.Scalar;
 import org.bytedeco.javacpp.opencv_core.Size;
+import org.easypr.img.ImageColorUtil;
 
 /**
  * @author Created by fanwenjie
@@ -341,6 +343,12 @@ public class PlateLocate {
     
     private Mat getBlackWhiteMat(Mat src) {
     	src.getBufferedImage();
+    	
+    	try {
+			ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.bluePlateRGB);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
