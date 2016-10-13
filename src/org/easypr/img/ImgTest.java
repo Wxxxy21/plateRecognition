@@ -21,6 +21,7 @@ public class ImgTest {
 		
 		
 		new ImgTest().replaceImageColor();
+		
 	}
 	
 	
