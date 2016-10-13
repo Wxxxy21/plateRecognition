@@ -1,6 +1,5 @@
 package org.easypr;
 
-import org.easypr.test.EasyPrTest;
 
 
 public class Main {

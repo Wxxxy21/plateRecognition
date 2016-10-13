@@ -200,6 +200,9 @@ public class PlateLocate {
      * @return 一个Mat的向量，存储所有抓取到的图像
      */
     public Vector<Mat> plateLocate1(Mat src) {
+    	
+    	Mat bw = getBlackWhiteMat(src);
+    	
         Vector<Mat> resultVec = new Vector<Mat>();
 
         Mat src_blur = new Mat();
@@ -337,7 +340,12 @@ public class PlateLocate {
 
     // 设置与读取变量
 
-    public void setGaussianBlurSize(int gaussianBlurSize) {
+    private Mat getBlackWhiteMat(Mat src) {
+    	src.getBufferedImage();
+		return null;
+	}
+
+	public void setGaussianBlurSize(int gaussianBlurSize) {
         this.gaussianBlurSize = gaussianBlurSize;
     }
 

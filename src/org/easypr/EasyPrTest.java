@@ -1,4 +1,4 @@
-package org.easypr.test;
+package org.easypr;
 
 import static org.bytedeco.javacpp.opencv_highgui.imread;
 import static org.easypr.core.CoreFunc.getPlateType;
