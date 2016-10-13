@@ -338,8 +338,7 @@ public class PlateLocate {
     }
     
 
-    // 设置与读取变量
-
+    
     private Mat getBlackWhiteMat(Mat src) {
     	src.getBufferedImage();
 		return null;
