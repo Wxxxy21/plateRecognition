@@ -189,7 +189,7 @@ public class PlateLocate {
         if (debug) {
             imwrite("tmp/debug_result.jpg", result);
         }
-
+        System.out.println(resultVec.size());
         return resultVec;
     }
     
@@ -289,7 +289,7 @@ public class PlateLocate {
         System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
-            if (verifySizes(mr))
+            //if (verifySizes(mr))
                 rects.add(mr);
         }
 
@@ -297,7 +297,7 @@ public class PlateLocate {
         System.out.println(rects.size());
         for (int i = 0; i < rects.size(); i++) {
             RotatedRect minRect = rects.get(i);
-            if (verifySizes(minRect)) {
+           // if (verifySizes(minRect)) {
 
                 if (debug) {
                     Point2f rect_points = new Point2f(4);
@@ -332,12 +332,12 @@ public class PlateLocate {
                     Mat resultMat = showResultMat(img_rotated, rect_size, minRect.center(), k++);
                     resultVec.add(resultMat);
                 }
-            }
+           // }
         }
         if (debug) {
             imwrite("tmp/debug_result.jpg", result);
         }
-
+        System.out.println(resultVec.size());
         return resultVec;
     }
     
