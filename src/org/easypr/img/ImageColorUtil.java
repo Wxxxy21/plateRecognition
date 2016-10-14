@@ -13,10 +13,13 @@ public class ImageColorUtil {
 	public static final int[] whiteRGB = new int[]{255,255,255,255,255,255};
 	
 	public static final int[] blueRGB = new int[]{0,20,15,35,60,130};
+	
+	public static final int plate_width_divisor = 10;
+	public static final int plate_height_divisor = 20;
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor("e:/d4/2.jpg","e:/d5/result.jpg",blueRGB);
+		replaceColor("e:/d4/1.jpg","e:/d5/1.jpg",blueRGB);
     }
 
 	public static void replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
@@ -33,39 +36,39 @@ public class ImageColorUtil {
         int minx = bi.getMinX();  
         int miny = bi.getMinY();  
         System.out.println("正在处理……");  
-        /** 
-         * 这里是遍历图片的像素，因为要处理图片的背色，所以要把指定像素上的颜色换成目标颜色 
-         * 这里 是一个二层循环，遍历长和宽上的每个像素 
-         */  
+        System.out.println(width+"  X  "+height);
         for (int i = minx; i < width; i++) {  
             for (int j = miny; j < height; j++) {  
-                // System.out.print(bi.getRGB(jw, ih));  
-                /** 
-                 * 得到指定像素（i,j)上的RGB值， 
-                 */  
+            	
                 int pixel = bi.getRGB(i, j);  
-                /** 
-                 * 分别进行位操作得到 r g b上的值 
-                 */  
+                
                 rgb[0] = (pixel & 0xff0000) >> 16;  
                 rgb[1] = (pixel & 0xff00) >> 8;  
                 rgb[2] = (pixel & 0xff);  
+                
                 //如果颜色在范围内，变白，否则变黑
-                if(			rgb[0]>=rgbRange[0] && rgb[0]<=rgbRange[1]
-               		 				&& 
-               		 		rgb[1]>=rgbRange[2] && rgb[1]<=rgbRange[3]
-               		 				&& 
-                			rgb[2]>=rgbRange[4] && rgb[2]<=rgbRange[5]
-                	){  
-               	 
+                if(	rgb[0]>=rgbRange[0] && rgb[0]<=rgbRange[1]	&& 	rgb[1]>=rgbRange[2] && rgb[1]<=rgbRange[3]&& rgb[2]>=rgbRange[4] && rgb[2]<=rgbRange[5]){  
                 	bi.setRGB(i, j, 0xFFFFFF);
                 }else{
                 	bi.setRGB(i, j, 0x000000);
                 }
-                
                   
             }  
         }  
+        
+        int y1 = getY1(bi);
+        int y2 = getY2(bi);
+        
+        int x1 = getX1(bi);
+        int x2 = getX2(bi);
+        
+        System.out.println("width:"+(x2-x1)+" , height："+(y2-y1));
+        
+        completeImage(bi,x1,x2,y1,y2);
+        
+        
+        
+        
         System.out.println("处理完毕。");  
         /** 
          * 将缓冲对象保存到新文件中 
@@ -74,6 +77,141 @@ public class ImageColorUtil {
         ImageIO.write(bi,"jpg", ops);  
         ops.flush();  
         ops.close();  
+	}
+	
+	
+	private static void completeImage(BufferedImage bi, int x1, int x2, int y1,
+			int y2) {
+		
+		int width = bi.getWidth();  
+        int height = bi.getHeight();  
+        int minx = bi.getMinX();  
+        int miny = bi.getMinY();  
+        
+        for (int i = minx; i < width; i++) {  
+            for (int j = miny; j < height; j++) {  
+                
+                //如果颜色在范围内，变白，否则变黑
+                if( i>=x1 && i<=x2 && j>=y1 && j<=y2 ){  
+                	bi.setRGB(i, j, 0xFFFFFF);
+                }else{
+                	bi.setRGB(i, j, 0x000000);
+                }
+                  
+            }  
+        }  
+		
+	}
+
+	private static int getX2(BufferedImage bi) {
+		int width = bi.getWidth();  
+        int height = bi.getHeight();  
+        int miny = bi.getMinY();  
+        
+        for (int i = width-1; i >0; i--) {  
+        	int count = 0;
+        	for(int j = miny; j< height ; j++ ){
+        		//System.out.println(i+","+j);
+        		int pixel = bi.getRGB(i, j);  
+        		int r = (pixel & 0xff0000) >> 16;  
+            	int g = (pixel & 0xff00) >> 8;  
+                int b = (pixel & 0xff);  
+                if(r==255 && g == 255 && b == 255){
+                	count++;
+                }
+        	}
+        	if(count>(width/plate_height_divisor)){
+        		return i;
+        	}
+        	
+        }
+		return 0;
+	}
+	
+	private static int getX1(BufferedImage bi) {
+		
+		int width = bi.getWidth();  
+        int height = bi.getHeight();  
+        int minx = bi.getMinX();  
+        int miny = bi.getMinY();  
+        
+        for (int i = minx; i < width; i++) {  
+        	int count = 0;
+        	for(int j = miny; j< height ; j++ ){
+        		//System.out.println(i+","+j);
+        		int pixel = bi.getRGB(i, j);  
+        		int r = (pixel & 0xff0000) >> 16;  
+            	int g = (pixel & 0xff00) >> 8;  
+                int b = (pixel & 0xff);  
+                if(r==255 && g == 255 && b == 255){
+                	count++;
+                }
+        	}
+        	if(count>(width/plate_height_divisor)){
+        		return i;
+        	}
+        	
+        }
+		return 0;
+	}
+
+	private static int getY2(BufferedImage bi) {
+		
+		int width = bi.getWidth();  
+        int height = bi.getHeight();  
+        int minx = bi.getMinX();  
+        
+        for (int i = height-1; i>0 ; i--) {  
+        	
+        	int count = 0;
+        	for(int j = minx; j< width ; j++ ){
+        		
+        		int pixel = bi.getRGB(j, i);  
+        		int r = (pixel & 0xff0000) >> 16;  
+            	int g = (pixel & 0xff00) >> 8;  
+                int b = (pixel & 0xff);  
+                if(r==255 && g == 255 && b == 255){
+                	count++;
+                }
+        	}
+        	if(count>(width/plate_width_divisor)){
+        		return i;
+        	}
+        	
+        }
+		return 0;
+	}
+
+	/**
+	 * 获取Y轴上的第一个坐标
+	 * @param bi
+	 * @return
+	 */
+	private static int getY1(BufferedImage bi) {
+		
+		int width = bi.getWidth();  
+        int height = bi.getHeight();  
+        int minx = bi.getMinX();  
+        int miny = bi.getMinY();  
+        
+        for (int i = miny; i < height; i++) {  
+        	int count = 0;
+        	for(int j = minx; j< width ; j++ ){
+        		//System.out.println(i+","+j);
+        		int pixel = bi.getRGB(j, i);  
+        		int r = (pixel & 0xff0000) >> 16;  
+            	int g = (pixel & 0xff00) >> 8;  
+                int b = (pixel & 0xff);  
+                if(r==255 && g == 255 && b == 255){
+                	count++;
+                }
+        	}
+        	if(count>(width/plate_width_divisor)){
+        		return i;
+        	}
+        	
+        }
+		return 0;
 	}
 
 	/**
@@ -95,7 +233,7 @@ public class ImageColorUtil {
         } catch (Exception e) {  
             e.printStackTrace();  
         } 
-		replaceColor(bi,"e:/d5/jingQM01G6.jpg",rgbRange);
+		replaceColor(bi,target,rgbRange);
 		
 	}  
 
