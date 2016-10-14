@@ -10,11 +10,13 @@ import javax.imageio.ImageIO;
 public class ImageColorUtil {
 	
 	
-	public static final int[] bluePlateRGB = new int[]{255,255,255,255,255,255};
+	public static final int[] whiteRGB = new int[]{255,255,255,255,255,255};
+	
+	public static final int[] blueRGB = new int[]{0,20,15,35,60,130};
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor("e:/d4/jingQM01G6.jpg","e:/d5/jingQM01G6.jpg",bluePlateRGB);
+		replaceColor("e:/d4/2.jpg","e:/d5/result.jpg",blueRGB);
     }
 
 	public static void replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {

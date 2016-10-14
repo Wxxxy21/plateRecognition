@@ -97,12 +97,11 @@ public class Main {
     	
     	
     	//String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
-    	String imgPath = "res/image/test4/jingQM01G6.jpg";//
+    	String imgPath = "res/image/test4/2.jpg";//
     	
-    	//boolean isMyLocate = false;
-    	boolean isMyLocate = true;
+    	boolean newMethod = false;// false   true
     	EasyPrTest t = new EasyPrTest();
-     	t.testPlateRecognise(imgPath,isMyLocate);
+     	t.testPlateRecognise(imgPath,newMethod);
     	
     }
 }
