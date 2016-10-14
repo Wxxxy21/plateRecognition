@@ -22,14 +22,14 @@ import org.junit.Test;
 public class EasyPrTest {
     
     @Test
-    public void testPlateRecognise(String imgPath) {
+    public void testPlateRecognise(String imgPath, boolean isMyLocate) {
 
     
         Mat src = imread(imgPath);
         PlateDetect plateDetect = new PlateDetect();
         plateDetect.setPDLifemode(true);
         Vector<Mat> matVector = new Vector<Mat>();
-        if (0 == plateDetect.plateDetect(src, matVector)) {
+        if (0 == plateDetect.plateDetect(src, matVector,isMyLocate)) {
             CharsRecognise cr = new CharsRecognise();
             
             for (int i = 0; i < matVector.size(); ++i) {
@@ -47,7 +47,7 @@ public class EasyPrTest {
         PlateDetect plateDetect = new PlateDetect();
         plateDetect.setPDLifemode(true);
         Vector<Mat> matVector = new Vector<Mat>();
-        if (0 == plateDetect.plateDetect(src, matVector)) {
+        if (0 == plateDetect.plateDetect(src, matVector,false)) {
             for (int i = 0; i < matVector.size(); ++i) {
                 showImage("Plate Detected", matVector.get(i));
             }

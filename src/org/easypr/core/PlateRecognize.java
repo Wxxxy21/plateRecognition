@@ -15,7 +15,7 @@ public class PlateRecognize {
     public int plateRecognize(Mat src, Vector<String> licenseVec) {
         //车牌方块集合
         Vector<Mat> plateVec = new Vector<Mat>();
-        int resultPD = plateDetect.plateDetect(src, plateVec);
+        int resultPD = plateDetect.plateDetect(src, plateVec,false);
         if (resultPD == 0) {
             int num = (int) plateVec.size();
             for (int j = 0; j < num; j++) {

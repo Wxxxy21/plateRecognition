@@ -139,13 +139,13 @@ public class PlateLocate {
         // 筛选。对轮廓求最小外接矩形，然后验证，不满足条件的淘汰。
 
         Vector<RotatedRect> rects = new Vector<RotatedRect>();
-
+        System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
             if (verifySizes(mr))
                 rects.add(mr);
         }
-
+        System.out.println(rects.size());
         int k = 1;
         for (int i = 0; i < rects.size(); i++) {
             RotatedRect minRect = rects.get(i);
@@ -231,7 +231,7 @@ public class PlateLocate {
         // 对图像进行Sobel 运算，得到的是图像的一阶水平方向导数。
 
         // Generate grad_x and grad_y
-        Mat grad_x = new Mat();
+       /* Mat grad_x = new Mat();
         Mat grad_y = new Mat();
         Mat abs_grad_x = new Mat();
         Mat abs_grad_y = new Mat();
@@ -266,11 +266,11 @@ public class PlateLocate {
         if (debug) {
             imwrite("tmp/debug_morphology.jpg", img_threshold);
         }
-
+*/
         // Find 轮廓 of possibles plates 求轮廓。求出图中所有的轮廓。这个算法会把全图的轮廓都计算出来，因此要进行筛选。
 
         MatVector contours = new MatVector();
-        findContours(img_threshold, contours, // a vector of contours
+        findContours(src_gray, contours, // a vector of contours
                 CV_RETR_EXTERNAL, // 提取外部轮廓
                 CV_CHAIN_APPROX_NONE); // all pixels of each contours
 
@@ -286,7 +286,7 @@ public class PlateLocate {
         // 筛选。对轮廓求最小外接矩形，然后验证，不满足条件的淘汰。
 
         Vector<RotatedRect> rects = new Vector<RotatedRect>();
-
+        System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
             if (verifySizes(mr))
@@ -294,6 +294,7 @@ public class PlateLocate {
         }
 
         int k = 1;
+        System.out.println(rects.size());
         for (int i = 0; i < rects.size(); i++) {
             RotatedRect minRect = rects.get(i);
             if (verifySizes(minRect)) {
@@ -350,7 +351,7 @@ public class PlateLocate {
     	Mat bw = null;
     	try {
 			ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.bluePlateRGB);
-			bw = imread("yrTmp/blankWidth.jpg");
+			bw = imread("yrTmp/test.jpg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

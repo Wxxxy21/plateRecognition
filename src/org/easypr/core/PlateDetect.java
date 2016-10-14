@@ -17,6 +17,7 @@ public class PlateDetect {
      * @param src
      * @param resultVec
      *            可能是车牌的图块集合
+     * @param isMyLocate 
      * @return the error number
      *         <ul>
      *         <li>0: plate detected successfully;
@@ -24,10 +25,16 @@ public class PlateDetect {
      *         <li>-2: plate not detected.
      *         </ul>
      */
-    public int plateDetect(final Mat src, Vector<Mat> resultVec) {
+    public int plateDetect(final Mat src, Vector<Mat> resultVec, boolean isMyLocate) {
     	
     	//获取所有可能的图库集合
-        Vector<Mat> matVec = plateLocate.plateLocate1(src);
+        Vector<Mat> matVec = null;
+        
+        if(isMyLocate){
+        	matVec = plateLocate.plateLocate1(src);
+        }else{
+        	matVec = plateLocate.plateLocate(src);
+        }
 
         if (0 == matVec.size()) {
             return -1;

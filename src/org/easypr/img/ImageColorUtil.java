@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class ImageColorUtil {
 	
 	
-	public static final int[] bluePlateRGB = new int[]{0,10,15,35,100,130};
+	public static final int[] bluePlateRGB = new int[]{255,255,255,255,255,255};
 
 	public static void main(String args[]) throws IOException {  
 		
@@ -49,11 +49,11 @@ public class ImageColorUtil {
                 rgb[1] = (pixel & 0xff00) >> 8;  
                 rgb[2] = (pixel & 0xff);  
                 //如果颜色在范围内，变白，否则变黑
-                if(			rgb[0]>rgbRange[0] && rgb[0]<=rgbRange[1]
+                if(			rgb[0]>=rgbRange[0] && rgb[0]<=rgbRange[1]
                		 				&& 
-               		 		rgb[1]>rgbRange[2] && rgb[1]<=rgbRange[3]
+               		 		rgb[1]>=rgbRange[2] && rgb[1]<=rgbRange[3]
                		 				&& 
-                			rgb[2]>rgbRange[4] && rgb[2]<=rgbRange[5]
+                			rgb[2]>=rgbRange[4] && rgb[2]<=rgbRange[5]
                 	){  
                	 
                 	bi.setRGB(i, j, 0xFFFFFF);
