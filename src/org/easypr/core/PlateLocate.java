@@ -351,7 +351,7 @@ public class PlateLocate {
     	Mat bw = null;
     	try {
 			ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
-			bw = imread("yrTmp/test.jpg");
+			bw = imread("yrTmp/blankWidth.jpg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
