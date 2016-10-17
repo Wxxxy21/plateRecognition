@@ -24,8 +24,17 @@ public class ImageColorUtil {
 	
 	
 	//京HH8489
-	public static final int plate_width_divisor = 10;
+	/*public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 30;
+	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
+	public static final int x1_offset = -0;
+	public static final int x2_offset = -0;
+	public static final int y1_offset = -5;
+	public static final int y2_offset = -5;*/
+	
+	//京FS0196
+	public static final int plate_width_divisor = 10;
+	public static final int plate_height_divisor = 50;
 	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
 	public static final int x1_offset = -0;
 	public static final int x2_offset = -0;
@@ -37,7 +46,7 @@ public class ImageColorUtil {
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor("e:/d4/3.jpg","e:/d5/result.jpg",blueRGB);
+		replaceColor("C:/Users/yr/Documents/GitHub/plateRecognition/test4/3.jpg","e:/d5/result.jpg",blueRGB);
     }
 
 	public static void replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
