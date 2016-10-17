@@ -12,18 +12,18 @@ public class ImageColorUtil {
 	
 	public static final int[] whiteRGB = new int[]{255,255,255,255,255,255};
 	
-	//public static final int[] blueRGB = new int[]{0,20,15,35,60,130};
 	
-	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
-	
+	//京QM01G6
 	public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 30;
+	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
+	public static final int x1_offset = -20;
+	public static final int x2_offset = -10;
+	public static final int y1_offset = 0;
+	public static final int y2_offset = -20;
 	
 	
-	public static final int x1_offset = 5;
-	public static final int x2_offset = 5;
-	public static final int y1_offset = 3;
-	public static final int y2_offset = -5;
+	
 
 	public static void main(String args[]) throws IOException {  
 		
@@ -81,11 +81,11 @@ public class ImageColorUtil {
 
 	private static void completeImage(BufferedImage bi) {
 		
-		int y1 = getY1(bi) + y1_offset;
-        int y2 = getY2(bi) - y2_offset;
+		int y1 = getY1(bi) - y1_offset;
+        int y2 = getY2(bi) + y2_offset;
         
-        int x1 = getX1(bi) + x1_offset;
-        int x2 = getX2(bi) - x2_offset;
+        int x1 = getX1(bi) - x1_offset;
+        int x2 = getX2(bi) + x2_offset;
         
         System.out.println("车牌 width："+(x2-x1)+" , height："+(y2-y1));
 		

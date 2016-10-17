@@ -97,7 +97,7 @@ public class Main {
     	
     	
     	//String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
-    	String imgPath = "res/image/test4/1.jpg";//
+    	String imgPath = "test4/1.jpg";//
     	
     	boolean newMethod = true;// false/true
     	
