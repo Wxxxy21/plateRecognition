@@ -372,10 +372,18 @@ public class PlateLocate {
     private Mat getBlackWhiteMat(Mat src) {
     	Mat bw = null;
     	try {
+    		System.out.println("使用蓝色定位车牌。");
 			int result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", Constants.blueRGB);
 			if(result == -1){
-				System.out.println("车牌定位失败。");
-				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", Constants.blueRGB);
+				System.out.println("使用蓝色定位车牌失败，使用黄色定位车牌……");
+				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", Constants.yellowRGB);
+				
+				if(result == -1){
+					System.out.println("定位车牌失败。");
+				}else{
+					bw = imread("yrTmp/blankWidth.jpg");
+				}
+				
 			}else{
 				bw = imread("yrTmp/blankWidth.jpg");
 			}
