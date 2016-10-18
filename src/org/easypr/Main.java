@@ -99,10 +99,10 @@ public class Main {
     	//String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
     	String imgPath = "test4/r.jpg";//
     	
-    	boolean try_color_detect = false;// false/true
+    	//boolean try_color_detect = false;// false/true
     	
     	EasyPrTest t = new EasyPrTest();
-     	t.testPlateRecognise(imgPath,try_color_detect);
+     	t.testPlateRecognise(imgPath);
     	
     }
 }

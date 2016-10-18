@@ -22,16 +22,15 @@ import org.junit.Test;
 public class EasyPrTest {
     
     @Test
-    public void testPlateRecognise(String imgPath, boolean isMyLocate) {
-
+    public void testPlateRecognise(String imgPath) {
     
         Mat src = imread(imgPath);
         PlateDetect plateDetect = new PlateDetect();
         plateDetect.setPDLifemode(true);
         Vector<Mat> matVector = new Vector<Mat>();
-        if (0 == plateDetect.plateDetect(src, matVector,isMyLocate)) {
+        if (0 == plateDetect.plateDetect(src, matVector)) {
             CharsRecognise cr = new CharsRecognise();
-            
+            System.out.println("最终定位的车牌个数："+matVector.size());
             for (int i = 0; i < matVector.size(); ++i) {
                 String result = cr.charsRecognise(matVector.get(i));
                 System.out.println("Chars Recognised: " + result);
@@ -47,7 +46,7 @@ public class EasyPrTest {
         PlateDetect plateDetect = new PlateDetect();
         plateDetect.setPDLifemode(true);
         Vector<Mat> matVector = new Vector<Mat>();
-        if (0 == plateDetect.plateDetect(src, matVector,false)) {
+        if (0 == plateDetect.plateDetect(src, matVector)) {
             for (int i = 0; i < matVector.size(); ++i) {
                 showImage("Plate Detected", matVector.get(i));
             }

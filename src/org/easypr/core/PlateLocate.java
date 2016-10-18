@@ -139,7 +139,6 @@ public class PlateLocate {
         // 筛选。对轮廓求最小外接矩形，然后验证，不满足条件的淘汰。
 
         Vector<RotatedRect> rects = new Vector<RotatedRect>();
-        System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
             
@@ -147,7 +146,6 @@ public class PlateLocate {
             if (verifySizes(mr))
                 rects.add(mr);
         }
-        System.out.println(rects.size());
         int k = 1;
         for (int i = 0; i < rects.size(); i++) {
             RotatedRect minRect = rects.get(i);
@@ -191,7 +189,6 @@ public class PlateLocate {
         if (debug) {
             imwrite("tmp/debug_result.jpg", result);
         }
-        System.out.println(resultVec.size());
         return resultVec;
     }
     
@@ -204,7 +201,7 @@ public class PlateLocate {
      *            原始图像
      * @return 一个Mat的向量，存储所有抓取到的图像
      */
-    public Vector<Mat> plateLocate1(Mat src) {
+    public Vector<Mat> plateLocateByColor(Mat src) {
     	
     	Vector<Mat> resultVec = new Vector<Mat>();
     	
@@ -288,7 +285,6 @@ public class PlateLocate {
         // 筛选。对轮廓求最小外接矩形，然后验证，不满足条件的淘汰。
 
         Vector<RotatedRect> rects = new Vector<RotatedRect>();
-        System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
             //if (verifySizes(mr))
@@ -296,7 +292,6 @@ public class PlateLocate {
         }
 
         int k = 1;
-        System.out.println(rects.size());
         for (int i = 0; i < rects.size(); i++) {
             RotatedRect minRect = rects.get(i);
            // if (verifySizes(minRect)) {
@@ -339,7 +334,6 @@ public class PlateLocate {
         if (debug) {
             imwrite("tmp/debug_result.jpg", result);
         }
-        System.out.println(resultVec.size());
         return resultVec;
     }
     

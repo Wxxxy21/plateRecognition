@@ -25,16 +25,12 @@ public class PlateDetect {
      *         <li>-2: plate not detected.
      *         </ul>
      */
-    public int plateDetect(final Mat src, Vector<Mat> resultVec, boolean isMyLocate) {
+    public int plateDetect(final Mat src, Vector<Mat> resultVec) {
     	
     	//获取所有可能的图库集合
         Vector<Mat> matVec = null;
         
-        if(isMyLocate){
-        	matVec = plateLocate.plateLocate1(src);
-        }else{
-        	matVec = plateLocate.plateLocate(src);
-        }
+        matVec = plateLocate.plateLocate(src);
 
         if (0 == matVec.size()) {
             return -1;
