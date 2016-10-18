@@ -12,21 +12,25 @@ public class ImageColorUtil {
 	
 	public static final int[] whiteRGB = new int[]{255,255,255,255,255,255};
 	
+	public static final int[] yellowRGB = new int[]{255,255,255,255,255,255};
+	
+	
+	
 	
 	//京QM01G6	通过
-	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/1.jpg";
+	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/1.jpg";
     public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 30;
 	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
 	public static final int x1_offset = -20;
 	public static final int x2_offset = -10;
 	public static final int y1_offset = 0;
-	public static final int y2_offset = -20;
+	public static final int y2_offset = -20;*/
 	
 	
 	//京HH8489	通过
-	/*
-	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/2.jpg";
+	
+	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/2.jpg";
 	public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 30;
 	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
@@ -36,8 +40,8 @@ public class ImageColorUtil {
 	public static final int y2_offset = -5;*/
 	
 	//京FS0196	通过
-	/*
-	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/3.jpg";
+	
+	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/3.jpg";
 	public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 50;
 	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
@@ -47,8 +51,8 @@ public class ImageColorUtil {
 	public static final int y2_offset = -5;*/
 	
 	//京QM01G6	通过
-	/*
-	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/6.jpg";
+	
+	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/6.jpg";
 	public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 50;
 	public static final int[] blueRGB = new int[]{0,35,15,120,60,240};
@@ -58,7 +62,7 @@ public class ImageColorUtil {
 	public static final int y2_offset = -5;*/
 	
 	//冀GX3499	通过一半
-	/*
+	
 	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/7.jpg"; 
 	public static final int plate_width_divisor = 10;
 	public static final int plate_height_divisor = 50;
@@ -66,7 +70,7 @@ public class ImageColorUtil {
 	public static final int x1_offset = -0;
 	public static final int x2_offset = -0;
 	public static final int y1_offset = -15;
-	public static final int y2_offset = -15;*/
+	public static final int y2_offset = -15;
 	
 	//（黄色车牌）京AA8322
 /*	
@@ -87,16 +91,26 @@ public class ImageColorUtil {
 		replaceColor(src_path,"e:/d5/result.jpg",blueRGB);
     }
 
-	public static void replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
+	
+	
+	/**
+	 * 外接接口
+	 * @param bi
+	 * @param target
+	 * @param rgbRange
+	 * @throws IOException
+	 */
+	public static int replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
         
-        setFrameBi(bi,rgbRange);
+        plateLocate(bi,rgbRange);
         
         FileOutputStream ops1 = new FileOutputStream(new File("e:/d5/temp.jpg"));  
         ImageIO.write(bi,"jpg", ops1);  
         
-        completeImage(bi);
-        
-        System.out.println("处理完毕。");  
+        int result = completeImage(bi);
+        if(result == -1){
+        	return result;
+        }
         /** 
          * 将缓冲对象保存到新文件中 
          */  
@@ -104,15 +118,16 @@ public class ImageColorUtil {
         ImageIO.write(bi,"jpg", ops);  
         ops.flush();  
         ops.close();  
+        
+        return 0;
 	}
 	
 	
-	private static void setFrameBi(BufferedImage bi, int[] rgbRange) {
+	private static void plateLocate(BufferedImage bi, int[] rgbRange) {
 		int width = bi.getWidth();  
         int height = bi.getHeight();  
         int minx = bi.getMinX();  
         int miny = bi.getMinY();  
-        System.out.println("正在处理");  
         System.out.println("图片 width："+width+"，height："+height);
         for (int i = minx; i < width; i++) {  
             for (int j = miny; j < height; j++) {  
@@ -135,8 +150,14 @@ public class ImageColorUtil {
         }  
 		
 	}
-
-	private static void completeImage(BufferedImage bi) {
+	
+	/**
+	 * 返回-1，车牌定位失败
+	 * 返回0，车牌定位成功
+	 * @param bi
+	 * @return
+	 */
+	private static int completeImage(BufferedImage bi) {
 		
 		int y1 = getY1(bi) - y1_offset;
         int y2 = getY2(bi) + y2_offset;
@@ -144,9 +165,16 @@ public class ImageColorUtil {
         int x1 = getX1(bi) - x1_offset;
         int x2 = getX2(bi) + x2_offset;
         
-        System.out.println("车牌 width："+(x2-x1)+" , height："+(y2-y1));
-        System.out.println("车牌的宽高比是："+new Float(x2-x1)/new Float(y2-y1));
-		
+        int w = x2-x1;
+        int h = y2-y1;
+        float rate = new Float(x2-x1)/new Float(y2-y1);
+        
+        System.out.println("车牌 width："+w+" , height："+h);
+        System.out.println("车牌的宽高比是："+ rate );
+        
+        if(w<0 || h<0 || rate>7 || rate<2){
+        	return -1;
+        }
 		
 		int width = bi.getWidth();  
         int height = bi.getHeight();  
@@ -165,7 +193,7 @@ public class ImageColorUtil {
                   
             }  
         }  
-		
+        return 0;
 	}
 
 	private static int getX2(BufferedImage bi) {

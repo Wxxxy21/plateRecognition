@@ -96,10 +96,8 @@ public class Main {
 //    	String imgPath = "res/image/general_test3/zheGZB388.jpg";//R
     	
     	
-    	//String imgPath = "res/image/general_test3/zheGZJ021.jpg";//W  浙GZ0021
-    	String imgPath = "test4/r.jpg";//
+    	String imgPath = "test4/7.jpg";//
     	
-    	//boolean try_color_detect = false;// false/true
     	
     	EasyPrTest t = new EasyPrTest();
      	t.testPlateRecognise(imgPath);

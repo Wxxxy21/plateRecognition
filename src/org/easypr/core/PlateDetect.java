@@ -53,6 +53,35 @@ public class PlateDetect {
         return 0;
     }
     
+    
+    
+    public int plateDetectByColor(Mat src, Vector<Mat> resultVec) {
+		//获取所有可能的图库集合
+        Vector<Mat> matVec = null;
+        
+        matVec = plateLocate.plateLocateByColor(src);
+
+        if (0 == matVec.size()) {
+            return -1;
+        }
+        
+        //对上面的所有的图块，进行过滤。
+        if (0 != plateJudge.plateJudge(matVec, resultVec)) {
+            return -2;
+        }
+        
+        if (getPDDebug()) {
+            int size = (int) resultVec.size();
+            for (int i = 0; i < size; i++) {
+                Mat img = resultVec.get(i);
+                String str = "temp/plate_judge_result_" + Integer.valueOf(i).toString() + ".jpg";
+                imwrite(str, img);
+            }
+        }
+
+        return 0;
+	}
+    
 
     /**
      * 生活模式与工业模式切换
@@ -136,5 +165,7 @@ public class PlateDetect {
     private PlateLocate plateLocate = new PlateLocate();
 
     private PlateJudge plateJudge = new PlateJudge();
+
+	
 
 }

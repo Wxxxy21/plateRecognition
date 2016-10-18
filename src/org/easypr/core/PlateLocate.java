@@ -346,8 +346,14 @@ public class PlateLocate {
     private Mat getBlackWhiteMat(Mat src) {
     	Mat bw = null;
     	try {
-			ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
-			bw = imread("yrTmp/blankWidth.jpg");
+			int result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
+			if(result == -1){
+				System.out.println("车牌定位失败。");
+				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
+			}else{
+				bw = imread("yrTmp/blankWidth.jpg");
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
