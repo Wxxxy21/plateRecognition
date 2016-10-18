@@ -13,7 +13,7 @@ public class ImageColorUtil {
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor(Constants.src_path,"e:/d5/result.jpg",Constants.blueRGB);
+		replaceColor(Constants.src_path,"e:/d5",Constants.blueRGB);
     }
 
 	
@@ -21,15 +21,15 @@ public class ImageColorUtil {
 	/**
 	 * 外接接口
 	 * @param bi
-	 * @param target
+	 * @param target:目录
 	 * @param rgbRange
 	 * @throws IOException
 	 */
-	public static int replaceColor(BufferedImage bi, String target,int[] rgbRange) throws IOException {
+	public static int replaceColor(BufferedImage bi, String outputFolder,int[] rgbRange) throws IOException {
         
         plateLocate(bi,rgbRange);
         
-        FileOutputStream ops1 = new FileOutputStream(new File("e:/d5/temp.jpg"));  
+        FileOutputStream ops1 = new FileOutputStream(new File(outputFolder+"/temp.jpg"));  
         ImageIO.write(bi,"jpg", ops1);  
         
         int result = completeImage(bi);
@@ -39,7 +39,7 @@ public class ImageColorUtil {
         /** 
          * 将缓冲对象保存到新文件中 
          */  
-        FileOutputStream ops = new FileOutputStream(new File(target));  
+        FileOutputStream ops = new FileOutputStream(new File(outputFolder+"/result.jpg"));  
         ImageIO.write(bi,"jpg", ops);  
         ops.flush();  
         ops.close();  
@@ -97,7 +97,7 @@ public class ImageColorUtil {
         System.out.println("车牌 width："+w+" , height："+h);
         System.out.println("车牌的宽高比是："+ rate );
         
-        if(w<0 || h<0 || rate>7 || rate<2){
+        if(w<0 || h<0 || rate>7 || rate<1){
         	return -1;
         }
 		

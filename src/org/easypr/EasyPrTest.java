@@ -44,7 +44,7 @@ public class EasyPrTest {
                     System.out.println("车牌识别结果： " + result);
                 }
             }else{
-            	System.out.println("颜色定位车牌失败。");
+            	System.out.println("识别车牌失败。");
             }
         	
         }else{
