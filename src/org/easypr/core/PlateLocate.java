@@ -142,6 +142,8 @@ public class PlateLocate {
         System.out.println(contours.size());
         for (int i = 0; i < contours.size(); ++i) {
             RotatedRect mr = minAreaRect(contours.get(i));
+            
+            
             if (verifySizes(mr))
                 rects.add(mr);
         }
