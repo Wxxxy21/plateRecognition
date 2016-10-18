@@ -10,85 +10,10 @@ import javax.imageio.ImageIO;
 public class ImageColorUtil {
 	
 	
-	public static final int[] whiteRGB = new int[]{255,255,255,255,255,255};
-	
-	public static final int[] yellowRGB = new int[]{255,255,255,255,255,255};
-	
-	
-	
-	
-	//京QM01G6	通过
-	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/1.jpg";
-    public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 30;
-	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
-	public static final int x1_offset = -20;
-	public static final int x2_offset = -10;
-	public static final int y1_offset = 0;
-	public static final int y2_offset = -20;*/
-	
-	
-	//京HH8489	通过
-	
-	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/2.jpg";
-	public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 30;
-	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
-	public static final int x1_offset = -0;
-	public static final int x2_offset = -0;
-	public static final int y1_offset = -5;
-	public static final int y2_offset = -5;*/
-	
-	//京FS0196	通过
-	
-	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/3.jpg";
-	public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 50;
-	public static final int[] blueRGB = new int[]{0,35,15,35,60,130};
-	public static final int x1_offset = -0;
-	public static final int x2_offset = -0;
-	public static final int y1_offset = -5;
-	public static final int y2_offset = -5;*/
-	
-	//京QM01G6	通过
-	
-	/*public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/6.jpg";
-	public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 50;
-	public static final int[] blueRGB = new int[]{0,35,15,120,60,240};
-	public static final int x1_offset = -0;
-	public static final int x2_offset = -0;
-	public static final int y1_offset = -5;
-	public static final int y2_offset = -5;*/
-	
-	//冀GX3499	通过一半
-	
-	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/7.jpg"; 
-	public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 50;
-	public static final int[] blueRGB = new int[]{0,35,15,120,60,240};
-	public static final int x1_offset = -0;
-	public static final int x2_offset = -0;
-	public static final int y1_offset = -15;
-	public static final int y2_offset = -15;
-	
-	//（黄色车牌）京AA8322
-/*	
- 	public static final String src_path = "C:/Users/yr/Documents/GitHub/plateRecognition/test4/1.jpg";
- 	public static final int plate_width_divisor = 10;
-	public static final int plate_height_divisor = 50;
-	public static final int[] blueRGB = new int[]{200,255,140,220,0,50};
-	public static final int x1_offset = -0;
-	public static final int x2_offset = -0;
-	public static final int y1_offset = -15;
-	public static final int y2_offset = -15;*/
-	
-	
-	
 
 	public static void main(String args[]) throws IOException {  
 		
-		replaceColor(src_path,"e:/d5/result.jpg",blueRGB);
+		replaceColor(Constants.src_path,"e:/d5/result.jpg",Constants.blueRGB);
     }
 
 	
@@ -159,11 +84,11 @@ public class ImageColorUtil {
 	 */
 	private static int completeImage(BufferedImage bi) {
 		
-		int y1 = getY1(bi) - y1_offset;
-        int y2 = getY2(bi) + y2_offset;
+		int y1 = getY1(bi) - Constants.y1_offset;
+        int y2 = getY2(bi) + Constants.y2_offset;
         
-        int x1 = getX1(bi) - x1_offset;
-        int x2 = getX2(bi) + x2_offset;
+        int x1 = getX1(bi) - Constants.x1_offset;
+        int x2 = getX2(bi) + Constants.x2_offset;
         
         int w = x2-x1;
         int h = y2-y1;
@@ -213,7 +138,7 @@ public class ImageColorUtil {
                 	count++;
                 }
         	}
-        	if(count>(width/plate_height_divisor)){
+        	if(count>(width/Constants.plate_height_divisor)){
         		return i;
         	}
         	
@@ -240,7 +165,7 @@ public class ImageColorUtil {
                 	count++;
                 }
         	}
-        	if(count>(width/plate_height_divisor)){
+        	if(count>(width/Constants.plate_height_divisor)){
         		return i;
         	}
         	
@@ -267,7 +192,7 @@ public class ImageColorUtil {
                 	count++;
                 }
         	}
-        	if(count>(width/plate_width_divisor)){
+        	if(count>(width/Constants.plate_width_divisor)){
         		return i;
         	}
         	
@@ -299,7 +224,7 @@ public class ImageColorUtil {
                 	count++;
                 }
         	}
-        	if(count>(width/plate_width_divisor)){
+        	if(count>(width/Constants.plate_width_divisor)){
         		return i;
         	}
         	

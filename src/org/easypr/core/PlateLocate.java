@@ -1,9 +1,34 @@
 package org.easypr.core;
 
-import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_core.CV_16S;
+import static org.bytedeco.javacpp.opencv_core.CV_8UC3;
+import static org.bytedeco.javacpp.opencv_core.addWeighted;
+import static org.bytedeco.javacpp.opencv_core.convertScaleAbs;
+import static org.bytedeco.javacpp.opencv_core.line;
 import static org.bytedeco.javacpp.opencv_highgui.imread;
 import static org.bytedeco.javacpp.opencv_highgui.imwrite;
-import static org.bytedeco.javacpp.opencv_imgproc.*;
+import static org.bytedeco.javacpp.opencv_imgproc.BORDER_DEFAULT;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_CHAIN_APPROX_NONE;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_RETR_EXTERNAL;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_RGB2GRAY;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_OTSU;
+import static org.bytedeco.javacpp.opencv_imgproc.GaussianBlur;
+import static org.bytedeco.javacpp.opencv_imgproc.INTER_CUBIC;
+import static org.bytedeco.javacpp.opencv_imgproc.MORPH_CLOSE;
+import static org.bytedeco.javacpp.opencv_imgproc.MORPH_RECT;
+import static org.bytedeco.javacpp.opencv_imgproc.Sobel;
+import static org.bytedeco.javacpp.opencv_imgproc.cvtColor;
+import static org.bytedeco.javacpp.opencv_imgproc.drawContours;
+import static org.bytedeco.javacpp.opencv_imgproc.findContours;
+import static org.bytedeco.javacpp.opencv_imgproc.getRectSubPix;
+import static org.bytedeco.javacpp.opencv_imgproc.getRotationMatrix2D;
+import static org.bytedeco.javacpp.opencv_imgproc.getStructuringElement;
+import static org.bytedeco.javacpp.opencv_imgproc.minAreaRect;
+import static org.bytedeco.javacpp.opencv_imgproc.morphologyEx;
+import static org.bytedeco.javacpp.opencv_imgproc.resize;
+import static org.bytedeco.javacpp.opencv_imgproc.threshold;
+import static org.bytedeco.javacpp.opencv_imgproc.warpAffine;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -15,6 +40,7 @@ import org.bytedeco.javacpp.opencv_core.Point2f;
 import org.bytedeco.javacpp.opencv_core.RotatedRect;
 import org.bytedeco.javacpp.opencv_core.Scalar;
 import org.bytedeco.javacpp.opencv_core.Size;
+import org.easypr.img.Constants;
 import org.easypr.img.ImageColorUtil;
 
 /**
@@ -346,10 +372,10 @@ public class PlateLocate {
     private Mat getBlackWhiteMat(Mat src) {
     	Mat bw = null;
     	try {
-			int result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
+			int result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", Constants.blueRGB);
 			if(result == -1){
 				System.out.println("车牌定位失败。");
-				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", ImageColorUtil.blueRGB);
+				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp/blankWidth.jpg", Constants.blueRGB);
 			}else{
 				bw = imread("yrTmp/blankWidth.jpg");
 			}
