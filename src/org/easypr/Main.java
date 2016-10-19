@@ -96,7 +96,7 @@ public class Main {
 //    	String imgPath = "res/image/general_test3/zheGZB388.jpg";//R
     	
     	
-    	String imgPath = "test4/7.jpg";//
+    	String imgPath = "test4/8.jpg";//
     	
     	
     	EasyPrTest t = new EasyPrTest();
