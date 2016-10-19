@@ -235,11 +235,7 @@ public class PlateLocate {
 
         Mat src_blur = new Mat();
         Mat src_gray = new Mat();
-        Mat grad = new Mat();
 
-        int scale = SOBEL_SCALE;
-        int delta = SOBEL_DELTA;
-        int ddepth = SOBEL_DDEPTH;
 
         // 高斯模糊。Size中的数字影响车牌定位的效果。
         GaussianBlur(src_bw, src_blur, new Size(gaussianBlurSize, gaussianBlurSize), 0, 0, BORDER_DEFAULT);
@@ -253,45 +249,6 @@ public class PlateLocate {
             imwrite("tmp/debug_gray.jpg", src_gray);
         }
 
-        // 对图像进行Sobel 运算，得到的是图像的一阶水平方向导数。
-
-        // Generate grad_x and grad_y
-       /* Mat grad_x = new Mat();
-        Mat grad_y = new Mat();
-        Mat abs_grad_x = new Mat();
-        Mat abs_grad_y = new Mat();
-
-        Sobel(src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
-        convertScaleAbs(grad_x, abs_grad_x);
-
-        Sobel(src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
-        convertScaleAbs(grad_y, abs_grad_y);
-
-        // Total Gradient (approximate)
-        addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
-
-        if (debug) {
-            imwrite("tmp/debug_Sobel.jpg", grad);
-        }
-
-        // 对图像进行二值化。将灰度图像（每个像素点有256 个取值可能）转化为二值图像（每个像素点仅有1 和0 两个取值可能）。
-
-        Mat img_threshold = new Mat();
-        threshold(grad, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-        if (debug) {
-            imwrite("tmp/debug_threshold.jpg", img_threshold);
-        }
-
-        // 使用闭操作。对图像进行闭操作以后，可以看到车牌区域被连接成一个矩形装的区域。
-
-        Mat element = getStructuringElement(MORPH_RECT, new Size(morphSizeWidth, morphSizeHeight));
-        morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
-
-        if (debug) {
-            imwrite("tmp/debug_morphology.jpg", img_threshold);
-        }
-*/
         // Find 轮廓 of possibles plates 求轮廓。求出图中所有的轮廓。这个算法会把全图的轮廓都计算出来，因此要进行筛选。
 
         MatVector contours = new MatVector();
