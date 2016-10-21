@@ -95,9 +95,7 @@ public class Main {
 //    	String imgPath = "res/image/general_test3/zheG70000.jpg";//E
 //    	String imgPath = "res/image/general_test3/zheGZB388.jpg";//R
     	
-    	
-    	String imgPath = "test4/8.jpg";//
-    	
+    	String imgPath = "test4/10.jpg";//
     	
     	EasyPrTest t = new EasyPrTest();
      	t.testPlateRecognise(imgPath);

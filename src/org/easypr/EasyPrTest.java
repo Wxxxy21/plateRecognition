@@ -31,9 +31,18 @@ public class EasyPrTest {
         
         int returnVal = plateDetect.plateDetect(src, matVector);
         
-        if (returnVal != 0 || matVector.size() == 0) {
+        matVector = new Vector<Mat>();
+    	returnVal = plateDetect.plateDetectByColor(src, matVector);
+    	
+    	for (int i = 0; i < matVector.size(); ++i) {
+        	CharsRecognise cr = new CharsRecognise();
+            String result = cr.charsRecognise(matVector.get(i));
+            System.out.println("车牌识别结果： " + result);
+        }
+        
+        /*if (returnVal != 0 || matVector.size() == 0) {
         	
-        	System.out.println("车牌定位失败，开始使用车牌颜色定位车牌……");
+        	System.out.println("原始车牌定位失败，开始使用车牌颜色定位车牌……");
         	matVector = new Vector<Mat>();
         	returnVal = plateDetect.plateDetectByColor(src, matVector);
         	
@@ -54,8 +63,7 @@ public class EasyPrTest {
                 System.out.println("车牌识别结果： " + result);
             }
         }
-        
-        
+        */
     }
 
     @Test

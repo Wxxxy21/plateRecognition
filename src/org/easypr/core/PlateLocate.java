@@ -5,7 +5,6 @@ import static org.bytedeco.javacpp.opencv_core.CV_8UC3;
 import static org.bytedeco.javacpp.opencv_core.addWeighted;
 import static org.bytedeco.javacpp.opencv_core.convertScaleAbs;
 import static org.bytedeco.javacpp.opencv_core.line;
-import static org.bytedeco.javacpp.opencv_highgui.imread;
 import static org.bytedeco.javacpp.opencv_highgui.imwrite;
 import static org.bytedeco.javacpp.opencv_imgproc.BORDER_DEFAULT;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_CHAIN_APPROX_NONE;
@@ -327,27 +326,9 @@ public class PlateLocate {
      * @return
      */
     private Mat getBlackWhiteMat(Mat src) {
-    	
-    	//result.jpg   temp.jpg
-    	
     	Mat bw = null;
-    	try {
-    		System.out.println("使用蓝色定位车牌。");
-			int result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp", Constants.blueRGB);
-			if(result == -1){
-				System.out.println("使用蓝色定位车牌失败，使用黄色定位车牌……");
-				result = ImageColorUtil.replaceColor(src.getBufferedImage(), "yrTmp", Constants.yellowRGB);
-				
-				if(result == -1){
-					System.out.println("黄色定位车牌失败。");
-				}else{
-					bw = imread("yrTmp/result.jpg");
-				}
-				
-			}else{
-				bw = imread("yrTmp/result.jpg");
-			}
-			
+		try {
+			bw = ImageColorUtil.replaceColor(src.getBufferedImage(), Constants.BLUE_PLATE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
